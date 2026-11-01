@@ -199,7 +199,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
-          fail_ci_if_error: ${{ github.event_name == 'push' }}
+          fail_ci_if_error: false # FORK DRY RUN ONLY
           verbose: true
       # Fails instead of falling back to mongomock if the URI is missing
       - name: Run tests against MongoDB
@@ -440,7 +440,7 @@ jobs:
     name: Push image
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    if: ${{ github.event_name == 'push' }}
+    if: false # FORK DRY RUN ONLY: no Docker Hub secrets
     # Docker Hub secrets; the environment only allows branch `dev`
     environment: dev-images
     permissions:
@@ -587,7 +587,7 @@ jobs:
     name: Publish image
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    if: ${{ github.event_name == 'push' }}
+    if: false # FORK DRY RUN ONLY
     needs: [lint, test, chart, docs, smoke, push, scan]
     # Docker Hub secrets; the environment only allows branch `dev`
     environment: dev-images
@@ -684,4 +684,4 @@ jobs:
           needs: ${{ toJSON(needs) }}
           # `title` is skipped on purpose on pushes and for Dependabot, `push`
           # and `publish` on pull requests only
-          allow-skipped: ${{ github.event_name == 'pull_request' && 'title push publish' || 'title' }}
+          allow-skipped: ${{ github.event_name == 'pull_request' && 'title push publish' || 'title push scan publish' }} # FORK DRY RUN ONLY
