@@ -122,7 +122,8 @@ def test_gate_uses_shared_action() -> None:
     assert step["uses"].startswith("elixir-cloud-aai/.github/actions/gate@")
     assert step["with"]["needs"] == "${{ toJSON(needs) }}"
     assert step["with"]["allow-skipped"] == (
-        "${{ github.event_name == 'pull_request' && 'title push publish' || 'title' }}"
+        "${{ github.event_name == 'pull_request' && 'title push publish' "
+        "|| 'title push scan publish' }}"
     )
 
 

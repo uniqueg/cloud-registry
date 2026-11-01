@@ -440,7 +440,7 @@ jobs:
     name: Push image
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    if: false # FORK DRY RUN ONLY: no Docker Hub secrets
+    if: ${{ github.event_name == 'push' && github.repository == 'elixir-cloud-aai/cloud-registry' }} # FORK DRY RUN ONLY
     # Docker Hub secrets; the environment only allows branch `dev`
     environment: dev-images
     permissions:
@@ -587,7 +587,7 @@ jobs:
     name: Publish image
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    if: false # FORK DRY RUN ONLY
+    if: ${{ github.event_name == 'push' && github.repository == 'elixir-cloud-aai/cloud-registry' }} # FORK DRY RUN ONLY
     needs: [lint, test, chart, docs, smoke, push, scan]
     # Docker Hub secrets; the environment only allows branch `dev`
     environment: dev-images
